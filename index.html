@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <button id="uploader-btn">Open Uploader</button>
+    <!-- <script type="module" src="/src/main.ts"></script> -->
+    <script type="module">
+      import PrintcartUploader from "./src/main.ts";
+
+      const uploader = new PrintcartUploader({
+        token:
+          "1ed23e41e296c45b0c6c9cd722398b90a3cc906301bdebfaac4751cf2df8d06d",
+        sideId: "c5661a1e-8147-4dc3-8600-00fdc81ed14b",
+        // locale: {
+        //   heading: "Heading",
+        //   dropTargetDefault: "dropTargetDefault",
+        //   divider: "divider",
+        //   button: "button",
+        // },
+      });
+
+      const btn = document.getElementById("uploader-btn");
+
+      btn.addEventListener("click", () => {
+        uploader.open();
+      });
+
+      uploader.on("onload", () => console.log("onload"));
+      uploader.on("open", () => console.log("open"));
+      uploader.on("close", () => console.log("close"));
+      uploader.on("upload-success", (response, file) => console.log(response));
+      uploader.on("upload-error", () => console.log("upload error"));
+    </script>
+  </body>
+</html>

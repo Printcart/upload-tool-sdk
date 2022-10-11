@@ -1,0 +1,50 @@
+{
+  "name": "@printcart/uploader-sdk",
+  "version": "1.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite --port 3003",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "description": "Printcart SDK for Embeded Uploader.",
+  "author": "Printcart <dev@printcart.com> (printcart.com)",
+  "main": "./dist/main.js",
+  "module": "./dist/main.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/main.es.js",
+      "require": "./dist/main.js"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Printcart/upload-tool-sdk.git"
+  },
+  "keywords": [
+    "sdk",
+    "printing",
+    "printingAPI",
+    "api",
+    "upload",
+    "widget",
+    "ecommerce",
+    "web2print",
+    "web-to-print"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Printcart/upload-tool-sdk/issues"
+  },
+  "homepage": "https://github.com/Printcart/upload-tool-sdk#readme",
+  "devDependencies": {
+    "typescript": "^4.5.4",
+    "vite": "^2.9.9"
+  },
+  "dependencies": {
+    "events": "^3.3.0"
+  }
+}
