@@ -33,7 +33,7 @@ class PrintcartUploader {
     this.#locale = config.locale;
 
     if (!this.#unauthToken || !this.#sideId) {
-      console.warn("Missing Config Params");
+      console.warn("Missing Config Params.");
 
       return;
     }
