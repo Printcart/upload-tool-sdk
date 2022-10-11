@@ -38,11 +38,8 @@ class PrintcartUploader {
       return;
     }
 
-    // this.#applyLocale();
     this.#initIframe();
     this.#messageEventListener();
-
-    // this.#addListeners();
   }
 
   get locale() {
