@@ -27,7 +27,10 @@ class PrintcartUploader {
   constructor(config: IPrintcartUploader) {
     this.#unauthToken = config.token;
     this.#sideId = config.sideId;
-    this.#iframeUrl = import.meta.env.VITE_UPLOADER_URL;
+    this.#iframeUrl =
+      import.meta.env.MODE === "production"
+        ? import.meta.env.VITE_UPLOADER_URL
+        : "https://upload-tool.pages.dev/";
 
     this.#emitter = new EventEmitter();
     this.#locale = config.locale;
