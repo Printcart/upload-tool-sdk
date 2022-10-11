@@ -57,7 +57,7 @@ class PrintcartUploader {
     url.searchParams.set("parentUrl", window.location.href);
 
     if (!iframe || !(iframe instanceof HTMLIFrameElement) || !wrapper) {
-      console.warn("Can not find iframe element");
+      console.warn("Can not find iframe element.");
 
       return;
     }
