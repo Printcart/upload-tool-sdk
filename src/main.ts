@@ -27,6 +27,7 @@ class PrintcartUploader {
   constructor(config: IPrintcartUploader) {
     this.#unauthToken = config.token;
     this.#sideId = config.sideId;
+    
     this.#iframeUrl =
       import.meta.env.MODE === "production"
         ? "https://upload-tool.pages.dev/"
@@ -34,6 +35,7 @@ class PrintcartUploader {
 
     this.#emitter = new EventEmitter();
     this.#locale = config.locale;
+    
 
     if (!this.#unauthToken || !this.#sideId) {
       console.warn("Missing Config Params.");

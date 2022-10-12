@@ -12,8 +12,9 @@ export default defineConfig({
     lib: {
       entry: resolve(_dirname, "src/main.ts"),
       name: "PrintcartUploader",
+      formats: ['iife', 'es'],
       fileName: (format) => {
-        if (format === "umd") {
+        if (format === "iife") {
           return "main.js";
         }
 
