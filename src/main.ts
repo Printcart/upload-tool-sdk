@@ -4,7 +4,9 @@ import EventEmitter from "events";
 interface IPrintcartUploader {
   token: string;
   sideId: string;
+  productId: string;
   locale?: ILocale;
+  uploaderUrl?: string;
 }
 
 interface ILocale {
@@ -19,24 +21,27 @@ const IFRAME_ID = "pc-uploader-iframe";
 
 class PrintcartUploader {
   #unauthToken: string;
-  #sideId: string;
+  #entityId: string;
   #iframeUrl: string;
   #emitter: any;
   #locale?: ILocale;
+  #entityType: "side" | "product";
 
   constructor(config: IPrintcartUploader) {
     this.#unauthToken = config.token;
-    this.#sideId = config.sideId;
+    this.#entityId = config.sideId || config.productId;
+    this.#entityType = config.productId ? "product" : "side";
 
-    this.#iframeUrl =
-      import.meta.env.MODE === "production"
-        ? "https://upload-tool.pages.dev"
-        : import.meta.env.VITE_UPLOADER_URL;
+    this.#iframeUrl = config.uploaderUrl
+      ? config.uploaderUrl
+      : import.meta.env.MODE === "production"
+      ? "https://upload-tool.pages.dev"
+      : import.meta.env.VITE_UPLOADER_URL;
 
     this.#emitter = new EventEmitter();
     this.#locale = config.locale;
 
-    if (!this.#unauthToken || !this.#sideId) {
+    if (!this.#unauthToken || !this.#entityId) {
       console.warn("Missing Config Params.");
 
       return;
@@ -56,8 +61,12 @@ class PrintcartUploader {
 
     const url = new URL(this.#iframeUrl);
 
-    url.searchParams.set("unauthToken", this.#unauthToken);
-    url.searchParams.set("sideId", this.#sideId);
+    url.searchParams.set("token", this.#unauthToken);
+    if (this.#entityType === "side") {
+      url.searchParams.set("sideId", this.#entityId);
+    } else if (this.#entityType === "product") {
+      url.searchParams.set("productId", this.#entityId);
+    }
     url.searchParams.set("parentUrl", window.location.href);
 
     if (!iframe || !(iframe instanceof HTMLIFrameElement) || !wrapper) {
@@ -130,11 +139,11 @@ class PrintcartUploader {
             this.#emit("close");
           }
 
-          if (event.data.uploaderEvent === "upload-design-success") {
+          if (event.data.uploaderEvent === "upload-success") {
             this.#emit("upload-success", event.data.response, event.data.file);
           }
 
-          if (event.data.uploaderEvent === "upload-design-error") {
+          if (event.data.uploaderEvent === "upload-error") {
             this.#emit("upload-error", event.data.error);
           }
 
@@ -144,11 +153,17 @@ class PrintcartUploader {
           if (iframe && iframe instanceof HTMLIFrameElement) {
             this.#emit("onload");
 
+            if (event.data.uploaderEvent === "loaded") {
+              console.log("test load");
+            }
+
             if (
               locale &&
-              event.data.uploaderEvent === "onload" &&
+              event.data.uploaderEvent === "loaded" &&
               event.data.finished
             ) {
+              console.log("test");
+
               iframe.focus();
 
               iframe.contentWindow?.postMessage(
