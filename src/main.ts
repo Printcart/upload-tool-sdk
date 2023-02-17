@@ -131,7 +131,10 @@ class PrintcartUploader {
     window.addEventListener(
       "message",
       (event) => {
-        if (event.origin === this.#iframeUrl) {
+        const originURL = new URL(event.origin);
+        const iframeURL = new URL(this.#iframeUrl);
+
+        if (originURL.host === iframeURL.host) {
           if (event.data.uploaderEvent === "close" && wrapper) {
             wrapper.style.opacity = "0";
             wrapper.style.visibility = "hidden";
@@ -140,7 +143,7 @@ class PrintcartUploader {
           }
 
           if (event.data.uploaderEvent === "upload-success") {
-            this.#emit("upload-success", event.data.response, event.data.file);
+            this.#emit("upload-success", event.data.data);
           }
 
           if (event.data.uploaderEvent === "upload-error") {
@@ -152,10 +155,6 @@ class PrintcartUploader {
 
           if (iframe && iframe instanceof HTMLIFrameElement) {
             this.#emit("onload");
-
-            if (event.data.uploaderEvent === "loaded") {
-              console.log("test load");
-            }
 
             if (
               locale &&
